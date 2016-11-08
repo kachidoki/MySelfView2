@@ -54,6 +54,7 @@ public class CustomImageView extends View {
 
     public CustomImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CustomImageView, defStyleAttr, 0);
 
         int n = a.getIndexCount();
@@ -103,9 +104,9 @@ public class CustomImageView extends View {
             mWidth = specSize;
         } else
         {
-            // ��ͼƬ�����Ŀ�
+
             int desireByImg = getPaddingLeft() + getPaddingRight() + mImage.getWidth();
-            // �����������Ŀ�
+
             int desireByTitle = getPaddingLeft() + getPaddingRight() + mTextBound.width();
 
             if (specMode == MeasureSpec.AT_MOST)// wrap_content
@@ -116,9 +117,6 @@ public class CustomImageView extends View {
             }
         }
 
-        /***
-         * ���ø߶�
-         */
 
         specMode = MeasureSpec.getMode(heightMeasureSpec);
         specSize = MeasureSpec.getSize(heightMeasureSpec);

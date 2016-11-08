@@ -4,12 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     tools:context="com.kachidoki.myselfview2.MainActivity">
 
    <!--<com.kachidoki.myselfview2.VolumControlBar-->
-       <!--android:layout_width="100dp"-->
-       <!--android:layout_height="100dp"-->
+       <!--android:layout_width="150dp"-->
+       <!--android:layout_height="150dp"-->
        <!--android:layout_marginTop="20dp"-->
        <!--app:bg="@mipmap/ic_launcher"-->
        <!--app:circleWidth="12dp"-->
@@ -30,10 +29,11 @@
        <!--app:titleTextColor="#ff0000"-->
        <!--app:titleTextSize="30sp"-->
        <!--/>-->
-   <android.support.v7.widget.ActivityChooserView
-       android:layout_width="200dp"
-       android:layout_height="200dp">
 
-   </android.support.v7.widget.ActivityChooserView>
+   <com.kachidoki.myselfview2.SearchView
+       android:layout_width="150dp"
+       android:layout_height="150dp"/>
+
+
 
 </LinearLayout>

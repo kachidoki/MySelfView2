@@ -28,6 +28,7 @@ public class SearchView extends View{
 
 
 
+
     // 这个视图拥有的状态
     public static enum State {
         NONE,
@@ -71,22 +72,34 @@ public class SearchView extends View{
 
     public SearchView(Context context) {
         super(context);
-
         initPaint();
-
         initPath();
-
         initListener();
-
         initHandler();
-
         initAnimator();
-
         // 进入开始动画
         mCurrentState = State.STARTING;
         mStartingAnimator.start();
         Log.e("Test","viewHeight = "+mViewHeight+"viewWith = "+mViewWidth);
+        Log.e("Test","----- SearchViewCreate -----");
 
+
+    }
+    public SearchView(Context context, AttributeSet attrs) {
+        this(context, attrs,0);
+    }
+    public SearchView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        initPaint();
+        initPath();
+        initListener();
+        initHandler();
+        initAnimator();
+        // 进入开始动画
+        mCurrentState = State.STARTING;
+        mStartingAnimator.start();
+        Log.e("Test","viewHeight = "+mViewHeight+"viewWith = "+mViewWidth);
+        Log.e("Test","----- SearchViewCreate -----");
     }
 
 
@@ -163,6 +176,7 @@ public class SearchView extends View{
                 super.handleMessage(msg);
                 switch (mCurrentState) {
                     case STARTING:
+                        Log.i("Test", "STARTING");
                         // 从开始动画转换好搜索动画
                         isOver = false;
                         mCurrentState = State.SEARCHING;
@@ -170,12 +184,10 @@ public class SearchView extends View{
                         mSearchingAnimator.start();
                         break;
                     case SEARCHING:
+                        Log.i("Test", "RESTART");
                         if (!isOver) {  // 如果搜索未结束 则继续执行搜索动画
                             mSearchingAnimator.start();
-                            Log.e("Update", "RESTART");
-                            Log.e("Test","viewHeight = "+mViewHeight+"viewWith = "+mViewWidth);
-
-
+                            Log.i("Update", "RESTART");
                             count++;
                             if (count>2){       // count大于2则进入结束状态
                                 isOver = true;
@@ -186,6 +198,7 @@ public class SearchView extends View{
                         }
                         break;
                     case ENDING:
+                        Log.i("Test", "ENDING");
                         // 从结束动画转变为无状态
                         mCurrentState = State.NONE;
                         break;
@@ -195,6 +208,7 @@ public class SearchView extends View{
     }
 
     private void initAnimator() {
+        Log.e("Test","InitAnimator-------");
         mStartingAnimator = ValueAnimator.ofFloat(0, 1).setDuration(defaultDuration);
         mSearchingAnimator = ValueAnimator.ofFloat(0, 1).setDuration(defaultDuration);
         mEndingAnimator = ValueAnimator.ofFloat(1, 0).setDuration(defaultDuration);
@@ -216,17 +230,10 @@ public class SearchView extends View{
         mViewHeight = h;
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mViewWidth = MeasureSpec.getSize(widthMeasureSpec);
-        mViewHeight = MeasureSpec.getSize(heightMeasureSpec);
-    }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         drawSearch(canvas);
 
     }
