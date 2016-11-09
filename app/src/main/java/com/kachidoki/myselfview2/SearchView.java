@@ -48,7 +48,7 @@ public class SearchView extends View{
     private PathMeasure mMeasure;
 
     // 默认的动效周期 2s
-    private int defaultDuration = 2000;
+    private int defaultDuration = 20000;
 
     // 控制各个过程的动画
     private ValueAnimator mStartingAnimator;
@@ -80,7 +80,7 @@ public class SearchView extends View{
         // 进入开始动画
         mCurrentState = State.STARTING;
         mStartingAnimator.start();
-        Log.e("Test","viewHeight = "+mViewHeight+"viewWith = "+mViewWidth);
+        Log.e("Test","viewHeight = "+mViewHeight+"  viewWith = "+mViewWidth);
         Log.e("Test","----- SearchViewCreate -----");
 
 
@@ -228,6 +228,7 @@ public class SearchView extends View{
         super.onSizeChanged(w, h, oldw, oldh);
         mViewWidth = w;
         mViewHeight = h;
+        Log.e("Test","viewHeight = "+mViewHeight+"  viewWith = "+mViewWidth);
     }
 
 
