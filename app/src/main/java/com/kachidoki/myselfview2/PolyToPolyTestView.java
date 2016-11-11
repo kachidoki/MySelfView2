@@ -43,8 +43,7 @@ public class PolyToPolyTestView extends View {
 
 
     private void initBitmapAndMatrix() {
-        mBitmap = BitmapFactory.decodeResource(getResources(),
-                R.drawable.img1);
+        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.img2);
 
         float[] temp = {0, 0,                                    // 左上
                 mBitmap.getWidth(), 0,                          // 右上

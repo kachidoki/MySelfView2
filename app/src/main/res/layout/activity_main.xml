@@ -4,40 +4,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kachidoki.myselfview2.MainActivity">
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical"
+    tools:context=".activity.MainActivity">
 
-   <!--<com.kachidoki.myselfview2.VolumControlBar-->
-       <!--android:layout_width="150dp"-->
-       <!--android:layout_height="150dp"-->
-       <!--android:layout_marginTop="20dp"-->
-       <!--app:bg="@mipmap/ic_launcher"-->
-       <!--app:circleWidth="12dp"-->
-       <!--app:dotCount="20"-->
-       <!--app:firstColor="#252420"-->
-       <!--app:secondColor="#FDFDFD"-->
-       <!--app:splitSize="25"-->
-       <!--/>-->
-
-
-   <!--<com.kachidoki.myselfview2.CustomImageView-->
-       <!--android:layout_width="wrap_content"-->
-       <!--android:layout_height="wrap_content"-->
-       <!--android:layout_margin="10dp"-->
-       <!--app:image="@mipmap/ic_launcher"-->
-       <!--app:imageScaleType="center"-->
-       <!--app:titleText="hello_android!"-->
-       <!--app:titleTextColor="#ff0000"-->
-       <!--app:titleTextSize="30sp"-->
-       <!--/>-->
-
-   <!--<com.kachidoki.myselfview2.SearchView-->
-       <!--android:layout_width="150dp"-->
-       <!--android:layout_height="150dp"/>-->
-   
-   <com.kachidoki.myselfview2.MyImageView
+   <Button
+       android:layout_marginTop="20dp"
+       android:id="@+id/paintTest"
        android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:src="@drawable/img2"/>
+       android:layout_height="60dp"
+       android:text="PaintTest"/>
+   <Button
+       android:layout_marginTop="20dp"
+       android:id="@+id/SearchView"
+       android:layout_width="match_parent"
+       android:layout_height="60dp"
+       android:text="SearchView"/>
+   <Button
+       android:layout_marginTop="20dp"
+       android:id="@+id/MyImageView"
+       android:layout_width="match_parent"
+       android:layout_height="60dp"
+       android:text="ImageView"/>
+   <Button
+       android:layout_marginTop="20dp"
+       android:id="@+id/PolytoPoly"
+       android:layout_width="match_parent"
+       android:layout_height="60dp"
+       android:text="PolyToPoly"/>
+
 
 
 

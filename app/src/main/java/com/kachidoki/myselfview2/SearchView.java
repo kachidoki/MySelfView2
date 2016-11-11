@@ -48,7 +48,7 @@ public class SearchView extends View{
     private PathMeasure mMeasure;
 
     // 默认的动效周期 2s
-    private int defaultDuration = 20000;
+    private int defaultDuration = 2000;
 
     // 控制各个过程的动画
     private ValueAnimator mStartingAnimator;
