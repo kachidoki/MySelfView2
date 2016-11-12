@@ -8,9 +8,11 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
@@ -30,7 +32,16 @@ public class MyImageView extends ImageView implements ViewTreeObserver.OnGlobalL
     //捕获用户多指触控比例
     private ScaleGestureDetector mScaleGestrueDetector;
 
+    //------自由移动
+    private int mLastPointerCount;
 
+    private float mLastX,mLastY;
+    private int mTouchSlop;
+    private boolean isCanDrag;
+    private boolean isCheckLeftAndRight,isCheckTopAndBottom;
+
+    //-----双击放大
+    private GestureDetector mGestrueDetector;
 
     public MyImageView(Context context, AttributeSet attrs) {
         this(context, attrs,0);
@@ -42,6 +53,24 @@ public class MyImageView extends ImageView implements ViewTreeObserver.OnGlobalL
         super.setScaleType(ScaleType.MATRIX);
         mScaleGestrueDetector = new ScaleGestureDetector(context,this);
         setOnTouchListener(this);
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        mGestrueDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+
+                float x = e.getX();
+                float y = e.getY();
+
+                if (getScale()<mMidScale){
+                    mScaleMatrix.postScale(mMidScale/getScale(),mMidScale/getScale(),x,y);
+                    setImageMatrix(mScaleMatrix);
+                }else {
+                    mScaleMatrix.postScale(mInitScale/getScale(),mInitScale/getScale(),x,y);
+                    setImageMatrix(mScaleMatrix);
+                }
+                return true;
+            }
+        });
     }
 
     public MyImageView(Context context) {
@@ -197,7 +226,84 @@ public class MyImageView extends ImageView implements ViewTreeObserver.OnGlobalL
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if (mGestrueDetector.onTouchEvent(event)) {return true;}
         mScaleGestrueDetector.onTouchEvent(event);
+
+
+        float x = 0;
+        float y = 0;
+        int pointCount = event.getPointerCount();
+        for (int i=0;i<pointCount;i++){
+            x+=event.getX(i);
+            y+=event.getY(i);
+        }
+        x/=pointCount;
+        y/=pointCount;
+        if (mLastPointerCount!=pointCount){
+            isCanDrag = false;
+            mLastX = x;
+            mLastY = y;
+        }
+        mLastPointerCount = pointCount;
+        switch (event.getAction()){
+            case MotionEvent.ACTION_MOVE:
+                float dx = x - mLastX;
+                float dy = y - mLastY;
+                if (!isCanDrag){
+                    isCanDrag = isMove(dx,dy);
+                }
+                if (isCanDrag){
+                   RectF rectf = getMatrixRectF();
+                    if (getDrawable()!=null){
+                        isCheckLeftAndRight = isCheckTopAndBottom = true;
+                        //如果宽度小于控件宽度，不允许横向移动
+                        if (rectf.width()<getWidth()){
+                            isCheckLeftAndRight = false;
+                            dx = 0;
+                        }
+                        if (rectf.height()<getHeight()){
+                            isCheckTopAndBottom = false;
+                            dy = 0;
+                        }
+                        mScaleMatrix.postTranslate(dx,dy);
+                        checkBorderWhenTranslate();
+                        setImageMatrix(mScaleMatrix);
+                    }
+                }
+                mLastX = x;
+                mLastY = y;
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                mLastPointerCount  = 0;
+                break;
+        }
         return true;
+    }
+    //移动时进行边界检查
+    private void checkBorderWhenTranslate() {
+        RectF rectf = getMatrixRectF();
+        float deltaX = 0;
+        float deltaY = 0;
+        int width = getWidth();
+        int height = getHeight();
+
+        if (rectf.top>0&&isCheckTopAndBottom){
+            deltaY = -rectf.top;
+        }
+        if (rectf.bottom<height&&isCheckTopAndBottom){
+            deltaY = height - rectf.bottom;
+        }
+        if (rectf.left>0&&isCheckLeftAndRight){
+            deltaX = -rectf.left;
+        }
+        if (rectf.right<width&&isCheckLeftAndRight){
+            deltaX = width - rectf.right;
+        }
+        mScaleMatrix.postTranslate(deltaX,deltaY);
+    }
+
+    private boolean isMove(float dx, float dy) {
+        return Math.sqrt(dx*dx+dy*dy)>mTouchSlop;
     }
 }
